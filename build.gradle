@@ -1,0 +1,83 @@
+buildscript {
+	ext {
+		bootVersion = '2.3.10.RELEASE'
+		kotlinVersion = '1.4.32'
+		kotestVersion ='4.4.3'
+		mockkVersion = '1.9.3'
+		springGradleVersion = '1.0.11.RELEASE'
+		projectVersion = '1.0.0'
+		springBootAdminVersion = '2.3.1'
+	}
+	repositories {
+		mavenCentral()
+		maven { url 'https://repo.spring.io/milestone' }
+		maven { url 'https://repo.spring.io/snapshot' }
+	}
+	dependencies {
+		classpath("org.springframework.boot:spring-boot-gradle-plugin:${bootVersion}")
+		classpath("io.spring.gradle:dependency-management-plugin:${springGradleVersion}")
+		classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:${kotlinVersion}")
+		classpath("org.jetbrains.kotlin:kotlin-allopen:${kotlinVersion}")
+		classpath("org.jetbrains.kotlin:kotlin-noarg:${kotlinVersion}")
+		classpath("org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:3.0")
+		classpath("de.codecentric:spring-boot-admin-dependencies:${springBootAdminVersion}")
+	}
+}
+
+plugins {
+	id 'java'
+	id 'maven-publish'
+}
+
+subprojects {
+	apply plugin: 'java'
+	apply plugin: 'idea'
+	apply plugin: 'org.springframework.boot'
+	apply plugin: 'io.spring.dependency-management'
+	apply plugin: 'kotlin'
+	apply plugin: 'kotlin-spring'
+	apply plugin: 'kotlin-noarg'
+
+	group = 'com.neocryptolabs'
+
+	targetCompatibility = 1.8
+	sourceCompatibility = 1.8
+	compileJava.options.encoding = 'UTF-8'
+
+	repositories {
+		mavenCentral()
+		maven { url 'https://repo.spring.io/milestone' }
+		maven { url 'https://repo.spring.io/snapshot' }
+		maven { url 'https://jitpack.io' }
+	}
+
+	dependencies {
+		// KT
+		implementation("org.jetbrains.kotlin:kotlin-stdlib")
+		implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
+		implementation("org.jetbrains.kotlin:kotlin-reflect")
+		implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.2'
+
+		testImplementation "org.jetbrains.kotlin:kotlin-test"
+		testImplementation "org.jetbrains.kotlin:kotlin-test-junit"
+        implementation 'com.fasterxml.jackson.module:jackson-module-kotlin:2.9.8'
+
+		implementation "org.slf4j:slf4j-api:1.7.25"
+		implementation("com.google.guava:guava:30.0-jre")
+		implementation 'com.google.code.gson:gson:2.8.6'
+		implementation 'io.jsonwebtoken:jjwt:0.9.1'
+		implementation 'com.squareup.okhttp3:okhttp:4.3.1'
+		implementation 'com.klaytn.caver:core:1.8.0'
+		implementation "net.gpedro.integrations.slack:slack-webhook:1.4.0"
+
+		testImplementation "org.jetbrains.kotlin:kotlin-test"
+		testImplementation "org.jetbrains.kotlin:kotlin-test-junit"
+		testImplementation "io.mockk:mockk:${mockkVersion}"
+		testImplementation "io.mockk:mockk-common:${mockkVersion}"
+
+		testImplementation("org.springframework.boot:spring-boot-starter-test:${bootVersion}") {
+			exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+		}
+		testRuntimeOnly('com.h2database:h2')
+	}
+}
