@@ -80,4 +80,16 @@ subprojects {
 		}
 		testRuntimeOnly('com.h2database:h2')
 	}
+
+	publishing {
+		publications {
+			release(MavenPublication) {
+				groupId = 'com.neocryptolabs'
+				artifactId = 'be-utils'
+				version = '1.0.0'
+
+				from components.java
+			}
+		}
+	}
 }
